@@ -1,0 +1,21 @@
+{
+  "name": "tasklist",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node API.js",
+    "dev": "modemon API.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "pg": "^8.15.0",
+    "postgres": "^3.4.5"
+  },
+  "description": ""
+}
