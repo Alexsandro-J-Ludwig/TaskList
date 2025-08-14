@@ -1,6 +1,6 @@
 //Tarefas realizadas para o funcionamento do back-end
 async function addTarefa(tarefa) {
-    await fetch('http://localhost:3000/Todolist', {
+    await fetch('http://localhost:3000/tasks', {
         method: `POST`,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tarefa })
@@ -8,7 +8,7 @@ async function addTarefa(tarefa) {
 }
 
 async function carregar() {
-    const response = await fetch('http://localhost:3000/Todolist')
+    const response = await fetch('http://localhost:3000/tasks')
     if(!response.ok) {
         console.error("Erro ao carregar tarefas")
         return;
@@ -34,7 +34,7 @@ async function carregar() {
 
 async function concluir(id, status) { //Inverte o status usando como parametro o ID e o Status
     console.log('passou')
-    await fetch(`http://localhost:3000/Todolist/${id}`, { 
+    await fetch(`http://localhost:3000/tasks/${id}`, { 
         method: 'PUT', 
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ status: !status })
@@ -43,7 +43,7 @@ async function concluir(id, status) { //Inverte o status usando como parametro o
 }
 
 async function deletar(id) {
-    await fetch(`http://localhost:3000/Todolist/${id}`, { method: 'DELETE' });
+    await fetch(`http://localhost:3000/tasks/${id}`, { method: 'DELETE' });
     carregar()
 }
 
