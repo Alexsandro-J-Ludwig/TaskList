@@ -4,17 +4,17 @@ async function addTarefa(tarefa) {
         method: `POST`,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tarefa })
-    })
-}
+    });
+};
 
 async function carregar() {
-    const response = await fetch('http://localhost:3000/tasks')
+    const response = await; fetch('http://localhost:3000/tasks');
     if(!response.ok) {
-        console.error("Erro ao carregar tarefas")
+        console.error("Erro ao carregar tarefas");
         return;
     }
 
-    const todolist = await response.json()
+    const todolist = await response.json();
 
     const ul = document.getElementById('lista');
     ul.innerHTML = todolist
@@ -29,36 +29,36 @@ async function carregar() {
                 </button>
             </div>
             `
-        ).join('')
-}
+        ).join('');
+};
 
 async function concluir(id, status) { //Inverte o status usando como parametro o ID e o Status
-    console.log('passou')
+    console.log('passou');
     await fetch(`http://localhost:3000/tasks/${id}`, { 
         method: 'PUT', 
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ status: !status })
+        body: JSON.stringify({ status: !status });
     });
-    carregar()
+    carregar();
 }
 
 async function deletar(id) {
     await fetch(`http://localhost:3000/tasks/${id}`, { method: 'DELETE' });
-    carregar()
+    carregar();
 }
 
 
 //Tarefas realizadas para o front-end
 function submit() {
-    const tarefa = document.getElementById('tarefa').value
+    const tarefa = document.getElementById('tarefa').value;
 
     if (tarefa === '') {
-        return console.error('O campo deve conter algo')
-    }
+        return console.error('O campo deve conter algo');
+    };
 
     addTarefa(tarefa).then(() => { //Realiza o chamado das funcoes quando a funcao de adicionar tarefa e realziada
-        carregar()
-        limparCampos()
+        carregar();
+        limparCampos();
     })
 }
 
@@ -66,4 +66,4 @@ function limparCampos () {
     document.getElementById('tarefa').value = ''
 }
 
-carregar()
+carregar();
