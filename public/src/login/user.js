@@ -1,3 +1,6 @@
+JSON.parse(localStorage.setItem("id_user", 1));
+const id_user = localStorage.getItem('id_user');
+console.log(id_user);
 
 
 async function login() {
