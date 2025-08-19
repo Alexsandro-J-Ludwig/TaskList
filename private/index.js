@@ -1,8 +1,5 @@
 import TaskRoutes from './src/tasklist/routes.js';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 import cors from 'cors';
 
 import express from 'express';

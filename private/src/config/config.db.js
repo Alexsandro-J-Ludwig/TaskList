@@ -1,5 +1,8 @@
 import { Pool } from 'pg';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 class DatabaseConnect {
     
     constructor(){
@@ -9,9 +12,13 @@ class DatabaseConnect {
             database: process.env.DB_NAME,
             password: process.env.DB_PASSWORD,
             port: process.env.DB_PORT,
-        })
-        .than(console.log("Conectado ao banco de dados"))
-        .than(console.log('Não foi possível conectar no banco de dados'))
+            idleTimeoutMillis: 10000
+        });
+    }
+
+    async query(text, params){
+        return this.pool.query(text, params);
+        
     }
 
     async disconnect() {

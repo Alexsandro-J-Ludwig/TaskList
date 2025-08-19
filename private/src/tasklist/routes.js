@@ -10,10 +10,10 @@ class TaskRoutes{
     }
 
     initRoutes(){
-        this.routes.post('/createTask', (req, res) => this.taskController.createTask(req, res));
-        this.routes.get('/getTask/', (req, res) => this.taskController.getTask(req, res));
-        this.routes.put('/updateTask/:id', (req, res) => this.taskController.updateTask(req, res));
-        this.routes.delete('/deleteTask/:id', (req, res) => this.taskController.deleteTask(req, res));
+        this.routes.post('/createTask', this.TaskController.createTask.bind(this.TaskController));
+        this.routes.get('/getTask', this.TaskController.getTask.bind(this.TaskController));
+        this.routes.put('/updateTask', this.TaskController.updateTask.bind(this.TaskController));
+        this.routes.delete('/deleteTask', this.TaskController.deleteTask.bind(this.TaskController));
     }
 }
 

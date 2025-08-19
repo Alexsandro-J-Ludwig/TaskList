@@ -1,6 +1,9 @@
+const id_user = JSON.stringify(localStorage.getItem('id_user'))
+console.log(id_user)
+
 //Tarefas realizadas para o funcionamento do back-end
 async function addTarefa(tarefa) {
-    await fetch('http://localhost:3000/tasks', {
+    await fetch('http://localhost:3000/tasks/createTask', {
         method: `POST`,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tarefa })
@@ -8,7 +11,7 @@ async function addTarefa(tarefa) {
 }
 
 async function carregar() {
-    const response = await fetch('http://localhost:3000/tasks')
+    const response = await fetch('http://localhost:3000/tasks/getTask')
     if(!response.ok) {
         console.error("Erro ao carregar tarefas")
         return;
@@ -34,7 +37,7 @@ async function carregar() {
 
 async function concluir(id, status) { //Inverte o status usando como parametro o ID e o Status
     console.log('passou')
-    await fetch(`http://localhost:3000/tasks/${id}`, { 
+    await fetch(`http://localhost:3000/tasks/updateTask`, { 
         method: 'PUT', 
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ status: !status })
@@ -67,3 +70,6 @@ function limparCampos () {
 }
 
 carregar()
+
+//Para pagina de login
+

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <script src="../src/user.js"></script>
 </head>
 <body>
     <main id="container_login">
@@ -12,7 +13,7 @@
             <input id="password_input" class="login" type="password" placeholder="senha" autocomplete="off">
         </div>
         <div>
-            <button type="submit">Logar</button>
+            <button type="submit" onclick="login()">Logar</button>
         </div>
     </main>
 
@@ -22,7 +23,7 @@
             <input id="password_input_signup" class="signup" type="text" placeholder="Senha" autocomplete="off">
         </div>
         <div>
-            <button type="submit">Cadastrar</button>
+            <button type="submit" onclick="signup()">Cadastrar</button>
         </div>
     </main>
 </body>

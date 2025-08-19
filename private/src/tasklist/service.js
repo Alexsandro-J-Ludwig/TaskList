@@ -5,7 +5,7 @@ class TaskService {
         this.taskModal = new TaskModal();
     }
 
-    async createTask(body, status=false) {
+    async createTask(body, status=false) {   
         await this.taskModal.createTask(body, status);
     }
 

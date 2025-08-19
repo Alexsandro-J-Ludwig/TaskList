@@ -8,17 +8,17 @@ class TaskController {
     async createTask(req, res){
         try {
             const { tarefa, descricao, id_user} = req.body;
-
+            
             if(!tarefa){
                 return res.status(400).send({ msg: "O nome da tarefa deve ser preenchido" });
             }
 
-            await this.TaskService.createTask(body);
+            await this.TaskService.createTask(req.body);
 
             return res.status(201).send({ msg: "Tarefa criada!" });
 
-        } catch(err) {
-            return res.status(500).send({ msg: err });
+        } catch(error) {
+            return res.status(500).json({ msg: error.message });
         }
     }
 
@@ -26,25 +26,23 @@ class TaskController {
         try {
             const { id_user } = req.body;
 
-            await this.TaskService.getTasks(req.body);
-
             const tasks = await this.TaskService.getTasks(req.body);
             return res.status(200).send(tasks);
 
-        } catch (err) {
-            return res.status(500).send({ msg: err })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
         }
     }
 
     async updateTask(req, res){
         try {
-            const {tarefa, descricao, status, id} = req.body;
+            const { id, tarefa, descricao, status } = req.body;
 
             await this.TaskService.updateTaskStatus(req.body);
 
             return res.status(200).send({msg:"Sucesso"});
-        } catch (err) {
-            return res.status(500).send({ msg: err })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
         }
     }
 
@@ -55,8 +53,8 @@ class TaskController {
             await this.TaskService.deleteTask(req.body);
             
             return res.status(200).send({msg:"Sucesso"});
-        } catch (err) {
-            return res.status(500).send({ msg: err })
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
         }
     }
 }
