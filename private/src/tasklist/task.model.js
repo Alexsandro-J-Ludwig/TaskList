@@ -27,10 +27,10 @@ class TaskModal {
             await this.pool.query(`UPDATE todolist SET tarefa=$2 WHERE id=$1`, [id, tarefa]);
         }
         if(descricao != null){
-            await this.pool.query(`UPDATE todolsit SET $2 WHERE id=$1`, [id, descricao])
+            await this.pool.query(`UPDATE todolist SET descricao=$2 WHERE id=$1`, [id, descricao])
         };
         if(status != null){
-            await this.pool.query(`UPDATE todolist SET $2 WHERE id=$1`, [id, status])
+            await this.pool.query(`UPDATE todolist SET status=$2 WHERE id=$1`, [id, status])
         }
     }
 

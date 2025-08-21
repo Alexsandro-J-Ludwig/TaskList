@@ -1,4 +1,4 @@
-import TaskModal from './modal.js';
+import TaskModal from './task.model.js';
 
 class TaskService {
     constructor(){
@@ -9,8 +9,8 @@ class TaskService {
         await this.taskModal.createTask(body, status);
     }
 
-    async getTasks(body) {
-        const tasks = await this.taskModal.getTasks(body);
+    async getTasks(query) {
+        const tasks = await this.taskModal.getTasks(query);
         return tasks;
     }
 

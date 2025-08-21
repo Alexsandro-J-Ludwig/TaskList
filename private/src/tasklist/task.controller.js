@@ -1,4 +1,4 @@
-import TaskService from "./service.js";
+import TaskService from "./task.service.js";
 
 class TaskController {
     constructor(){
@@ -24,10 +24,10 @@ class TaskController {
 
     async getTask(req, res){
         try {
-            const { id_user } = req.body;
+            const { id_user } = req.query;
 
-            const tasks = await this.TaskService.getTasks(req.body);
-            return res.status(200).send(tasks);
+            const tasks = await this.TaskService.getTasks(req.query);
+            return res.json(tasks);
 
         } catch (error) {
             return res.status(500).json({ msg: error.message });

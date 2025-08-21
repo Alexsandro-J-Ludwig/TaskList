@@ -1,4 +1,7 @@
-import TaskRoutes from './src/tasklist/routes.js';
+import dotenv from 'dotenv'
+dotenv.config();
+
+import TaskRoutes from './src/tasklist/task.routes.js';
 
 import cors from 'cors';
 
