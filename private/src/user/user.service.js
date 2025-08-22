@@ -1,4 +1,4 @@
-import UserModal from "./user.model";
+import UserModal from "./user.model.js";
 import bcrypt from 'bcrypt';
 
 class UserService{
@@ -6,17 +6,25 @@ class UserService{
         this.UserModal = new UserModal();
     };
 
-        async createUser(body){
-            const hashSenha = await bcrypt.hash(body.password, 10)
-            body.password = hashSenha;
+    async createUser(body){
+        const users = await this.UserModal.getUser(body.username);
 
-            await this.UserModal.createUser(body);
-        };
+        for(const user of users){
+            if(body.email === user.email){
+                throw new Error("Usuário já existe");
+            }
+        }
+
+        const hashSenha = await bcrypt.hash(body.password, 10)
+        body.password = hashSenha;
+
+        await this.UserModal.createUser(body);
+    };
 
     async getUser(body){
         const user = await this.UserModal.getUser({username: body.username});
 
-        if(!user) {
+        if(!user.rows) {
             throw new Error("Usuário não encontrado");
         }
 
@@ -32,8 +40,14 @@ class UserService{
     async updateUser(body){
         const user = await this.UserModal.getUser({ id: body.id });
 
-        if(user){
+        if(!user){
             throw new Error("Usuário não existe");
+        }
+
+        if(body.password){
+            const hashPassword = await bcrypt.hash(body.password)
+
+            body.password = hashPassword;
         }
 
         await this.UserModal.updateUser(body);

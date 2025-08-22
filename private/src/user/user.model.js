@@ -1,4 +1,4 @@
-import DatabaseConnect from "../config/config.db";
+import DatabaseConnect from "../config/config.db.js";
 
 class UserModal{
     constructor() {
@@ -7,22 +7,20 @@ class UserModal{
 
     async createUser(username, email, password){
         const query = `
-            INSERT INTO user(username, email, password)
-            VALUES($1, $2, $3, $4)
+            INSERT INTO users(username, email, passwords)
+            VALUES($1, $2, $3)
+            RETURING id, username
         `;
-        await this.pool.query(query, [username, email, password]);
+        const result = await this.pool.query(query, [username, email, password]);
+        return result.rows[0];
     };
 
-    async getUser(username, password){
+    async getUser(username){
         const query = `
-            SELECT * FROM user WHERE = $1
+            SELECT * FROM users WHERE username = $1
         `;
 
-        const response = await this.pool.query(query, [username, password]);
-
-        if(response.rows < 1){
-            return;
-        };
+        const response = await this.pool.query(query, [username]);
 
         return response;
     };
@@ -46,7 +44,7 @@ class UserModal{
         };
 
         const query = `
-            UPDATE user SET ${field.join(', ')} WHERE id=$${index}
+            UPDATE users SET ${field.join(', ')} WHERE id=$${index}
         `;
         value.push(id);
         await this.pool.query(query, value);
@@ -54,7 +52,7 @@ class UserModal{
 
     async deleteUser(id){
         const query = `
-            DELETE FROM todolist WHERE=$1
+            DELETE FROM users WHERE=$1
         `;
 
         await this.pool.query(query, [id]);

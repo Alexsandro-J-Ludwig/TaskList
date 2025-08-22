@@ -42,7 +42,7 @@ async function carregar() {
         .map(t => `
             <div class="tarefas" data-id="${t.id}">
                 <input type='button' class='tarefa' 
-                onclick="concluir({ id:${t.id}, status:${(t.status == true?t.status=false:t.status=true)}})" 
+                onclick="concluir( id:${t.id}, status:${(t.status)})" 
                 value='${t.tarefa}')
                 style="${t.status ? 'text-decoration: line-through; opacity: 0.7; color: rgb(128, 128, 128)' : ''}">
                 <button class='delete' onclick="deletar(${t.id})">
