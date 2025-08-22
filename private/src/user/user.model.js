@@ -5,7 +5,7 @@ class UserModal{
         this.pool = new DatabaseConnect();
     };
 
-    async createUser(username, email, password){
+    async createUser({ username, email, password }){
         const query = `
             INSERT INTO users(username, email, passwords)
             VALUES($1, $2, $3)
@@ -15,17 +15,17 @@ class UserModal{
         return result.rows[0];
     };
 
-    async getUser(username){
+    async getUser({ username, email }){
         const query = `
-            SELECT * FROM users WHERE username = $1
+            SELECT * FROM users WHERE username = $1 OR email=$2
         `;
 
-        const response = await this.pool.query(query, [username]);
+        const response = await this.pool.query(query, [username, email]);
 
         return response;
     };
 
-    async updateUser(id, username, email, password){
+    async updateUser({ id, username, email, password }){
         const value=[];
         const field=[];
         let index = 1;
@@ -50,7 +50,7 @@ class UserModal{
         await this.pool.query(query, value);
     };
 
-    async deleteUser(id){
+    async deleteUser({ id }){
         const query = `
             DELETE FROM users WHERE=$1
         `;

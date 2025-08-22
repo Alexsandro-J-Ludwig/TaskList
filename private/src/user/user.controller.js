@@ -60,14 +60,7 @@ class UserController{
 
     async updateUser(req, res){
         try{    
-            const token = req.headers.authorization?.split(" ")[1];
-
-            if(!token){
-                return res.status(401).send({ msg:"Token não informado" })
-            };
-
-            const decode = jwt.decode(token);
-            const id = decode.id;
+            const id = req.user.id;
 
             const { username, email, password } = req.body;
 
@@ -90,14 +83,7 @@ class UserController{
 
     async deleteUser(req, res){
         try {
-            const token = req.headers.authorization?.split(" ")[1];
-
-            if(!token){
-                return res.status(401).send({ msg:"Token não informado" })
-            };
-
-            const decode = jwt.decode(token);
-            const id = decode.id;
+            const id = req.user.id;
 
             const response = await this.UserService.deleteUser({ id: id });
 

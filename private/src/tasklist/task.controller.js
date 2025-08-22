@@ -6,14 +6,22 @@ class TaskController {
     }
 
     async createTask(req, res){
+        const id_user = req.user.id
+
         try {
-            const { tarefa, descricao, id_user} = req.body;
+            const { tarefa, descricao} = req.body;
             
             if(!tarefa){
                 return res.status(400).send({ msg: "O nome da tarefa deve ser preenchido" });
             }
 
-            await this.TaskService.createTask(req.body);
+            const data = {
+                tarefa,
+                descricao,
+                id_user
+            }
+
+            await this.TaskService.createTask(data);
 
             return res.status(201).send({ msg: "Tarefa criada!" });
 
@@ -23,10 +31,14 @@ class TaskController {
     }
 
     async getTask(req, res){
-        try {
-            const { id_user } = req.query;
+        const id_user = req.user.id;
 
-            const tasks = await this.TaskService.getTasks(req.query);
+        try {
+            const data = {
+                id_user
+            }
+
+            const tasks = await this.TaskService.getTasks(data);
             return res.json(tasks);
 
         } catch (error) {
