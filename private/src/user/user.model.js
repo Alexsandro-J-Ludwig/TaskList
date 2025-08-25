@@ -5,19 +5,19 @@ class UserModal{
         this.pool = new DatabaseConnect();
     };
 
-    async createUser({ username, email, password }){
+    async createUser({ username, email, password, randomCode }){
         const query = `
-            INSERT INTO users(username, email, passwords)
-            VALUES($1, $2, $3)
-            RETURING id, username
+            INSERT INTO users(username, email, passwords, active, ranconCode, expirationDate)
+            VALUES($1, $2, $3, false, $4, $5)
+            RETURNING id, username
         `;
-        const result = await this.pool.query(query, [username, email, password]);
+        const result = await this.pool.query(query, [username, email, password, randomCode]);
         return result.rows[0];
     };
 
-    async getUser({ username, email }){
+    async getUser({ email }){
         const query = `
-            SELECT * FROM users WHERE username = $1 OR email=$2
+            SELECT * FROM users WHERE email=$1
         `;
 
         const response = await this.pool.query(query, [username, email]);

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import TaskController from "../tasklist/task.controller.js";
 import UserController from "../user/user.controller.js";
 
+//Middleware para validar o token JWT
 class Middleware{
     constructor() {
         this.secreteKey = process.env.SKJWT;

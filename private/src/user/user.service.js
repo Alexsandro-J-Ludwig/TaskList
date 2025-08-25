@@ -16,14 +16,41 @@ class UserService{
         const hashSenha = await bcrypt.hash(body.password, 10)
         body.password = hashSenha;
 
-        await this.UserModal.createUser(body);
+        const numbers = '1234567890';
+        const randomCode = '';
+
+        while(randomCode.length <= 6){
+            const index = Math.floor(Math.random() * numbers.length);
+            randomCode += numbers[index];
+        }
+
+        randomCode = await bcrypt.hash(randomCode, 10)
+
+        const expirationTimeLeft = 15
+        const expirationDate = new Date
+        expirationDate.setMinutes(expirationDate.getMinutes() + expirationTimeLeft);
+
+        const data = {
+            username,
+            email,
+            password,
+            randomCode: randomCode,
+            expirationDate: expirationDate
+        }
+
+        await this.UserModal.createUser(data);
+
+        this.sendEmail()
     };
 
     async getUser(body){
-        const user = await this.UserModal.getUser({username: body.username});
+        const user = await this.UserModal.getUser({email: body.email});
 
         if(!user.rows) {
             throw new Error("Usuário não encontrado");
+        }
+        if(user.rows.active == false){
+            throw new Error("Usuario inativo")
         }
 
         const hashSenha = await bcrypt.compare(body.password, user.password);
@@ -43,7 +70,7 @@ class UserService{
         }
 
         if(body.password){
-            const hashPassword = await bcrypt.hash(body.password)
+            const hashPassword = await bcrypt.hash(body.password);
 
             body.password = hashPassword;
         }
@@ -52,14 +79,18 @@ class UserService{
     };
 
     async deleteUser(body){
-        const user = await this.UserModal.getUser({ id: body.id })
+        const user = await this.UserModal.getUser({ id: body.id });
 
         if(!user){
-            throw new Error("Usuário não existe")
-        }
+            throw new Error("Usuário não existe");
+        };
 
         await this.UserModal.deleteUser(user.id);
     };
+
+    async sendEmail(){
+        
+    }
 };
 
 export default UserService;

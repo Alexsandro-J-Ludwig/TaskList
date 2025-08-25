@@ -30,6 +30,7 @@ class TaskController {
         }
     }
 
+    //Pega as tarefas do usuário logado
     async getTask(req, res){
         const id_user = req.user.id;
 
