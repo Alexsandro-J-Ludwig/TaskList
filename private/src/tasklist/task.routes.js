@@ -1,6 +1,6 @@
 import TaskController from './task.controller.js';
 import { Router } from 'express';
-import Middleware from '../middleware/auth.middleware.js';
+import Middleware from "../middleware/auth.middleware.js"
 
 class TaskRoutes{
     constructor(){

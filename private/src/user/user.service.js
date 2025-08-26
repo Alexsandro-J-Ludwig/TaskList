@@ -1,3 +1,4 @@
+import { raw } from "express";
 import UserModal from "./user.model.js";
 import bcrypt from 'bcrypt';
 
@@ -7,59 +8,34 @@ class UserService{
     };
 
     async createUser(body){
-        const users = await this.UserModal.getUser(body.email);
-
-        if(users.email == body.email){
+        const users = await this.UserModal.getUser({ email: body.email });
+        
+        if(users.email === body.email){
             throw new Error("Usuario ja existe")
         }
 
         const hashSenha = await bcrypt.hash(body.password, 10)
-        body.password = hashSenha;
+        body.password = hashSenha
 
-        const numbers = '1234567890';
-        const randomCode = '';
-
-        while(randomCode.length <= 6){
-            const index = Math.floor(Math.random() * numbers.length);
-            randomCode += numbers[index];
-        }
-
-        randomCode = await bcrypt.hash(randomCode, 10)
-
-        const expirationTimeLeft = 15
-        const expirationDate = new Date
-        expirationDate.setMinutes(expirationDate.getMinutes() + expirationTimeLeft);
-
-        const data = {
-            username,
-            email,
-            password,
-            randomCode: randomCode,
-            expirationDate: expirationDate
-        }
-
-        await this.UserModal.createUser(data);
-
-        this.sendEmail()
+       const response = await this.UserModal.createUser(body);
+       
+       return { id: response.rows[0].id, username:response.raws[0].username }
     };
 
     async getUser(body){
-        const user = await this.UserModal.getUser({email: body.email});
-
-        if(!user.rows) {
+        const users = await this.UserModal.getUser({ email: body.email });
+        
+        if(!users) {
             throw new Error("Usuário não encontrado");
         }
-        if(user.rows.active == false){
-            throw new Error("Usuario inativo")
-        }
-
-        const hashSenha = await bcrypt.compare(body.password, user.password);
+        
+        const hashSenha = await bcrypt.compare(body.password, users.rows[0].passwords);
 
         if(!hashSenha){
             throw new Error("Senha inválida");
         }
-
-        return { id: user.id, username: user.username}; 
+        
+        return { id: users.rows[0].id, username: users.rows[0].username };
     };
 
     async updateUser(body){
@@ -70,7 +46,7 @@ class UserService{
         }
 
         if(body.password){
-            const hashPassword = await bcrypt.hash(body.password);
+            const hashPassword = await bcrypt.hash(body.password, 10);
 
             body.password = hashPassword;
         }
@@ -87,10 +63,6 @@ class UserService{
 
         await this.UserModal.deleteUser(user.id);
     };
-
-    async sendEmail(){
-        
-    }
 };
 
 export default UserService;

@@ -5,27 +5,25 @@ class UserModal{
         this.pool = new DatabaseConnect();
     };
 
-    async createUser({ username, email, password, randomCode }){
+    async createUser({ username, email, password }){
         const query = `
-            INSERT INTO users(username, email, passwords, active, ranconCode, expirationDate)
-            VALUES($1, $2, $3, false, $4, $5)
-            RETURNING id, username
+            INSERT INTO users(username, email, passwords)
+            VALUES($1, $2, $3)
         `;
-        const result = await this.pool.query(query, [username, email, password, randomCode]);
-        return result.rows[0];
+        
+        return await this.pool.query(query, [username, email, password]);
     };
 
-    async getUser({ email }){
+    async getUser({ id, email }){
         const query = `
-            SELECT * FROM users WHERE email=$1
+            SELECT * FROM users WHERE id=$1 OR email=$2
         `;
-
-        const response = await this.pool.query(query, [username, email]);
-
-        return response;
+            
+        const result = await this.pool.query(query, [id, email]);
+        return result;
     };
 
-    async updateUser({ id, username, email, password }){
+    async updateUser({ id, username, email, password, active }){
         const value=[];
         const field=[];
         let index = 1;
@@ -42,6 +40,10 @@ class UserModal{
             value.push(password);
             field.push(`password=$${index++}`);
         };
+        if(active != false){
+            value.push(active);
+            field.push(`active=$${index++}`)
+        }
 
         const query = `
             UPDATE users SET ${field.join(', ')} WHERE id=$${index}

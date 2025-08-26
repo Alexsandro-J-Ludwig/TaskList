@@ -9,19 +9,19 @@ class UserController{
     async createUser(req, res){
         try{
             const { username, email, password } = req.body;
-
+            
             if(!username || !email || !password){
                 return res.status(400).json({ msg: "Os campos não podem estar vazios" });
             };
 
             const regex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
 
-            if(!regex.test(email)){
+            if(!regex.test(email)){ 
                 return res.status(400).json({ msg: "Email inválido" });
             }
-
+            
             const response = await this.UserService.createUser(req.body);
-
+        
             if(!response){
                 return res.status(501).json({ msg: "Não foi possível completar o cadastro "});
             };
@@ -30,31 +30,32 @@ class UserController{
 
             return res.status(200).json({ token })
 
-        } catch(err){        
+        } catch(err){
             return res.status(500).send({ msg:`Erro: ${err}` })
         }
     }
 
     async getUser(req, res){
         try{
-            const { username, password } = req.body;
-
-            if(!username || !password){
+            const { email, password } = req.body;
+            
+            if(!email || !password){
                 return res.status(501).json({ msg:"Nenhum campo pode estar vazio" });
             }
 
             const response = await this.UserService.getUser(req.body);
 
             if(!response){
-                return res.status(501).json({ msg:"Usuário ou senha incorretos" });
+                return res.status(400).json({ msg:"Usuário ou senha incorretos" });
             }
-
+            console.log(response);
+            
             const token = jwt.sign({ id:response.id, username:response.username }, process.env.SJWT, {expiresIn:86400});
 
             return res.status(200).json({ token });
 
         } catch(error){
-            return res.status(500).send({ msg:error });
+            return res.status(500).send({ msg:`Erro ${error}` });
         }
     }
 

@@ -16,7 +16,7 @@ class UserRoutes{
         this.routes.get("/login", this.UserController.getUser.bind(this.UserController));
         this.routes.put("/update", 
             this.Middleware.valityToken.bind(this.Middleware),
-            this.UserController.getUser.bind(this.UserController)
+            this.UserController.updateUser.bind(this.UserController)
         );
         this.routes.delete("/delete", 
             this.Middleware.valityToken.bind(this.Middleware),
