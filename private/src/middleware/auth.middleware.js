@@ -6,7 +6,7 @@ import UserController from "../user/user.controller.js";
 //Middleware para validar o token JWT
 class Middleware{
     constructor() {
-        this.secreteKey = process.env.SKJWT;
+        this.secreteKey = process.env.SJWT;
         this.TaskController = new TaskController();
         this.UserController = new UserController();
     };

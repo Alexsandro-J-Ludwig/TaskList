@@ -31,7 +31,7 @@ class UserController{
             return res.status(200).json({ token })
 
         } catch(err){
-            return res.status(500).send({ msg:`Erro: ${err}` })
+            return res.status(500).send({ msg:"erro no servidor" })
         }
     }
 
@@ -55,7 +55,7 @@ class UserController{
             return res.status(200).json({ token });
 
         } catch(error){
-            return res.status(500).send({ msg:`Erro ${error}` });
+            return res.status(500).send({ msg:"erro no servidor" });
         }
     }
 
@@ -63,13 +63,11 @@ class UserController{
         try{    
             const id = req.user.id;
 
-            const { username, email, password } = req.body;
+            const { username, email, password, active } = req.body;
 
             const response = await this.UserService.updateUser({
                 id: id,
-                username: username,
-                email: email,
-                password: password
+                ...req.body
             });
 
             if(!response){
@@ -78,7 +76,7 @@ class UserController{
 
             return res.status(200).send({ msg:"usuário cadastrado com sucesso" });
         } catch(error){
-            return res.status(500).send({ msg:error });
+            return res.status(500).send({ msg:"erro no servidor" });
         };
     };
 
@@ -95,7 +93,7 @@ class UserController{
             return res.status(200).send({ msg:"Usuario deletado" });
 
         } catch (error) {
-            return res.status(500).send({ msg:error });
+            return res.status(500).send({ msg:"erro no servidor" });
         };
     };
 };

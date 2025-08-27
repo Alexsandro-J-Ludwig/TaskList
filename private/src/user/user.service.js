@@ -1,4 +1,3 @@
-import { raw } from "express";
 import UserModal from "./user.model.js";
 import bcrypt from 'bcrypt';
 
@@ -52,16 +51,18 @@ class UserService{
         }
 
         await this.UserModal.updateUser(body);
+        return { msg: "Usuario alterado com sucesso" }
     };
 
-    async deleteUser(body){
-        const user = await this.UserModal.getUser({ id: body.id });
+    async deleteUser(id){
+        const user = await this.UserModal.getUser({ id });
 
         if(!user){
             throw new Error("Usuário não existe");
         };
 
-        await this.UserModal.deleteUser(user.id);
+        await this.UserModal.deleteUser({ id });
+        return { msg:"ok"}
     };
 };
 

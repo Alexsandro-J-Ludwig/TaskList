@@ -17,8 +17,12 @@ class TaskModal {
 
     //Pega todas as tarefas apra exibir ao usuário em sua página
     async getTasks({ id_user }) {
-        const result = await this.pool.query(`SELECT * FROM todolist WHERE id_user=$1`, [id_user]);
-        return result.rows;
+        const query = `
+            SELECT * FROM todolist WHERE id_user=$1
+        `
+
+        const result = await this.pool.query(query, [id_user]);
+        return result
     };
 
     //Atualiza as tarefas de acordo com os campos que são desejados informar
