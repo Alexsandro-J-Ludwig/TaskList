@@ -6,7 +6,7 @@ class TaskModal {
     }
 
     //Cria tarefas para um usuário
-    async createTask({tarefa, descricao, id_user, status=false}) {
+    async createTask({tarefa, descricao, id_user, status="incompleto"}) {
         const query = `
         INSERT INTO todolist(tarefa, descricao, id_user, status)
         VALUES ($1, $2, $3, $4);
@@ -16,30 +16,50 @@ class TaskModal {
     };
 
     //Pega todas as tarefas apra exibir ao usuário em sua página
-    async getTasks({ id_user }) {
+    async getTasks({ id_user, id, status }) {
         const query = `
-            SELECT * FROM todolist WHERE id_user=$1
+            SELECT * FROM todolist WHERE id_user=$1 OR id=$2 OR status=$3
         `
 
-        const result = await this.pool.query(query, [id_user]);
+        const result = await this.pool.query(query, [id_user, id, status]);
         return result
     };
 
     //Atualiza as tarefas de acordo com os campos que são desejados informar
-    async updateTaskStatus({id, tarefa, descricao, status}) {
+    async updateTask({id, tarefa, descricao, status, id_user}) {
+        const value = [];
+        const field = [];
+        let index = 0;
+
         if(tarefa != null){
-            await this.pool.query(`UPDATE todolist SET tarefa=$2 WHERE id=$1`, [id, tarefa]);
+            value.push(tarefa);
+            field.push(`tarefa=$${++index}`);
         }
         if(descricao != null){
-            await this.pool.query(`UPDATE todolist SET descricao=$2 WHERE id=$1`, [id, descricao])
-        };
-        if(status != null){
-            await this.pool.query(`UPDATE todolist SET status=$2 WHERE id=$1`, [id, status])
+            value.push(descricao);
+            field.push(`descricao=$${++index}`);
         }
+        if(status != null){
+            value.push(status);
+            field.push(`status=$${++index}`);
+        }
+
+        const query = `
+            UPDATE todolist SET ${field.join(', ')} WHERE id=$${++index} AND id_user=$${++index}
+        `;
+        
+        value.push(id);
+        value.push(id_user);
+
+        await this.pool.query(query, value);
     }
 
-    async deleteTask({ id }) {
-        await this.pool.query(`DELETE FROM todolist WHERE id=$1`, [id])
+    async deleteTask({ id, id_user }) {
+        const query = `
+            DELETE FROM todolist WHERE id=$1 AND id_user=$2
+        `
+
+        await this.pool.query(query, [id, id_user]);
     }
 }
 

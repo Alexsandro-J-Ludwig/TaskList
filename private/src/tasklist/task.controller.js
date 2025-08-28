@@ -16,12 +16,15 @@ class TaskController {
             }
 
             const data = {
-                tarefa,
-                descricao,
+                ...req.body,
                 id_user
             }
 
-            await this.TaskService.createTask(data);
+            const response = await this.TaskService.createTask(data);
+
+            if(!response){
+                return res.status(400).send({ msg: "Erro ao criar tarefa" })
+            }
 
             return res.status(201).send({ msg: "Tarefa criada!" });
 
@@ -35,12 +38,8 @@ class TaskController {
         const id_user = req.user.id;
 
         try {
-            const data = {
-                id_user
-            }
-
-            const tasks = await this.TaskService.getTasks(data);
-            return res.json(tasks);
+            const tasks = await this.TaskService.getTasks({ id_user:id_user});
+            return res.json(tasks.rows);
 
         } catch (error) {
             return res.status(500).json({ msg: error.message });
@@ -48,10 +47,17 @@ class TaskController {
     }
 
     async updateTask(req, res){
+        const id_user = req.user.id;
+
         try {
             const { id, tarefa, descricao, status } = req.body;
 
-            await this.TaskService.updateTaskStatus(req.body);
+            const data = {
+                ...req.body,
+                id_user
+            }
+
+            await this.TaskService.updateTask(data);
 
             return res.status(200).send({msg:"Sucesso"});
         } catch (error) {
@@ -60,10 +66,21 @@ class TaskController {
     }
 
     async deleteTask(req, res){
+        const id_user = req.user.id;
+
         try{
             const {id} = req.body
 
-            await this.TaskService.deleteTask(req.body);
+            const data = {
+                id,
+                id_user
+            }
+
+            const response = await this.TaskService.deleteTask(data);
+            
+            if(!response){
+                return res.status(400).send({ msg: "Erro ao deletar tarefa" })
+            }
             
             return res.status(200).send({msg:"Sucesso"});
         } catch (error) {
