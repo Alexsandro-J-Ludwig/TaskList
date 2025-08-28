@@ -1,83 +1,122 @@
-# Lista de Tarefas
+# Backend - TodoList API
 
-Um sistema com funções básicas de listar tarefas, completá-las e apagá-las utilizando CRUD e uma API REST própria.
+Este repositório contém o backend da aplicação **TodoList**, responsável por gerenciar usuários e tarefas, implementado em **Node.js** com **Express** e **PostgreSQL**. 
 
-## Funcionalidades
-- **Adicionar tarefa:** Adiciona a tarefa informada e grava no banco de dados.
-- **Listar tarefas:** Lista as tarefas adicionadas ao banco de dados pelo usuário.
-- **Completar tarefa:** Atualiza a tarefa no banco de dados entre falso e verdadeiro.
-- **Apagar tarefas:** Apaga as tarefas no banco de dados pelo usuário.
+---
 
-## Tecnologias Utilizadas
-- **HTML:** Estrutura da página.
-- **CSS:** Estilo da página.
-- **JavaScript:** Lógica do funcionamento e comunicação entre front-end e back-end.
-- **Node.js:** Manipulação de dados e integração com o banco de dados.
-- **PostgreSQL:** Banco de dados utilizado nesse projeto.
+## 🛠 Tecnologias
 
-## Como usar
+- Node.js
+- Express.js
+- PostgreSQL
+- JWT para autenticação
+- dotenv para variáveis de ambiente
+- Vite + React (frontend separado)
+
+---
+
+## ⚡ Funcionalidades
+
+- CRUD de usuários
+- CRUD de tarefas
+- Validação de tarefas duplicadas
+- Regras de negócio:
+  - Evita criar tarefas duplicadas com mesmo status
+  - Permite atualização parcial de tarefas
+- Autenticação via JWT
+- Middleware para proteção de rotas
+
+---
+
+## 🔧 Instalação
 
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/Ale-ludw/Lista-de-tarefas.git
+git clone https://github.com/Alexsandro-J-Ludwig/TaskList
 ```
 
-2. Crie seu banco de dados através da interface do PostgreSQL chamado Todolist, entre no Query Tool e informe o seguinte código
-```sql
-CREATE TABLE TODOLIST(
+2. Instale as dependências:
+```bash
+npm i dotenv cors express pg jsonwebtoken bcrypt
+```
+
+3. Crie um arquivo `.env` com as variáveis de ambiente necessárias:
+```bash
+DB_USER=<seu_usuário>
+DB_HOST=localhost
+DB_NAME=<seu_banco_de_dados>
+DB_PASSWORD=<sua_senha_do_banco>
+DB_PORT=5432    
+SJWT=<chave_secreta_para_gerar_token>
+```
+4. Inicialize seu banco de dados e rode o seguinte comando em ```QUERY TOOL```:
+```bash
+CREATE DATABAE <nome_do_banco>
+
+CREATE TABLE users(
     ID SERIAL PRIMARY KEY,
-    TAREFA VARCHAR(40) NOT NULL,
-    STATUS BOOLEAN NOT NULL
+    USERNAME VARCHAR(50) NOT NULL,
+    EMAIL VARCHAR(50) NOT NULL,
+    PASSWORD VARCHAR(100) NOT NULL
+)
+
+CREATE TABLE tasks(
+    ID SERIAL PRIMARY KEY,
+    TAREFA VARCHAR(50) NOT NULL,
+    DESCRICAO VARCAHR(200) NOT NULL,
+    ID_USER INTEGER REFERENCE USERS(ID)
+    STATUS VARCHAR(10) NOT NULL,
 )
 ```
 
-3. Inicialize o sistema:
-```bash
-npm init -y
-```
-
-4. Instale as dependências:
-- **Cors**
-- **Client**
-- **Express**
-- **Pg**
-- **dotenv**
-
-Use o comando
+## 🚀 Rodando o backend
 
 ```bash
-npm install cors express pg dotenv
+node private/server
 ```
 
-5. Crie um arquivo .env na raiz do projeto com as seguintes variáveis (ajuste conforme seu PostgreSQL):
-```env
-DB_HOST=localhost
-DB_USER=postgres
-DB_PASSWORD=sua_senha
-DB_NAME=Todolist
-DB_PORT=5432
-```
+## 📦 Estrutura do projeto
 
-6. Acesse a pasta '/src' pelo terminal com o seguinte comando:
 ```bash
-cd src
+backend/
+
+├─ src/
+├─ ├─ private/
+    │  ├─ tasklist/       # API de tarefas
+    │  │ ├─ task.controller.js         # Lógica das rotas da tarefa
+    │  │ ├─ task.model.js              # Modelo de tarefa para o banco de dados
+    ├  │ ├─ task.service.js            # Regra de negócio da tarefa
+    ├  │ └─ task.routes.js             # Rotas da tarefa
+    ├  ├─ users/                        # API de usuários
+    ├  │ ├─ user.controller.js         # Lógica das rotas do usuário
+    ├  │ ├─ user.model.js              # Modelo de usuário para o banco de dados
+    ├  │ ├─ user.service.js            # Regra de negócio do usuário
+    ├  │ └─ user.routes.js             # Rotas do usuário
+    └─ server.js
+├─ .env
+├─ package.json
+└─ README.md
 ```
 
-7. Insira o comando abaixo:
-```bash
-node API.js
-```
+## 🔐 Autentificação
 
-# Contribuições
-Sinta-se à vontade para fazer contribuições! Para isso, siga os passos abaixo:
+** Usuário recebe JWT ao fazer login
+** Todos as rotas que exigem autentificação usam o middleware ```authMiddleware```
 
-1. Faça um fork deste repositório.
-2. Crie uma nova branch com a sua feature (git checkout -b feature/MinhaFeature).
-3. Faça o commit das suas alterações (git commit -am 'Adicionando nova funcionalidade').
-4. Envie para o seu repositório (git push origin feature/MinhaFeature).
-5. Abra um pull request explicando as suas alterações.
+## ⚙️ Boas praticas
 
-# Licença
+** Sempre validar dados no **Service** antes de enviar ao banco.
+** Evitar duplicidade de tarefas com status ativo.
+** Permitir atualização parcial de tarefas (nome, descrição ou status).
+** JWT deve ser verificado para rotas privadas.
 
-Este projeto é licenciado sob a Licença MIT – consulte o arquivo [LICENSE](LICENSE.txt) para mais detalhes.
+## 📌 Próximo passo
+
+** Conectar com o frontend React (Vite) em outro repositório.
+** Adicionar testes unitários e integração.
+** Implementar filtros e paginação de tarefas.
+
+## Licença
+
+Este projeto é licenciado sob a Licença MIT – consulte o arquivo ```LICENSE``` para mais detalhes.
