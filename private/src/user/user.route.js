@@ -13,7 +13,7 @@ class UserRoutes{
 
     async initRoutes(){
         this.routes.post('/signup', this.UserController.createUser.bind(this.UserController));
-        this.routes.get("/login", this.UserController.getUser.bind(this.UserController));
+        this.routes.post("/login", this.UserController.getUser.bind(this.UserController));
         this.routes.put("/update", 
             this.Middleware.valityToken.bind(this.Middleware),
             this.UserController.updateUser.bind(this.UserController)
