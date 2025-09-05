@@ -9,8 +9,8 @@ class UserService{
     async createUser(body){
         const users = await this.UserModal.getUser({ email: body.email });
         
-        if(users.email === body.email){
-            throw new Error("Usuario ja existe")
+        if (users.rows.length > 0) {
+            throw new Error("Usuário já existe");
         }
 
         const hashSenha = await bcrypt.hash(body.password, 10)
@@ -18,7 +18,7 @@ class UserService{
 
        const response = await this.UserModal.createUser(body);
        
-       return { id: response.rows[0].id, username:response.raws[0].username }
+       return { id: response.rows[0].id, username:response.rows[0].username }
     };
 
     async getUser(body){

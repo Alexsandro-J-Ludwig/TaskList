@@ -5,10 +5,11 @@ class UserModal{
         this.pool = new DatabaseConnect();
     };
 
-    async createUser({ username, email, password, active }){
+    async createUser({ username, email, password }){
         const query = `
-            INSERT INTO users(username, email, passwords, active)
-            VALUES($1, $2, $3, $4)
+            INSERT INTO users(username, email, passwords)
+            VALUES($1, $2, $3)
+            RETURNING id, username
         `;
         
         const result = await this.pool.query(query, [username, email, password]);

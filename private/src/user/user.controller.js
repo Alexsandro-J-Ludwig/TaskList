@@ -13,7 +13,7 @@ class UserController{
             if(!username || !email || !password){
                 return res.status(400).json({ msg: "Os campos não podem estar vazios" });
             };
-
+            
             const regex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
 
             if(!regex.test(email)){ 
@@ -31,7 +31,7 @@ class UserController{
             return res.status(200).json({ token })
 
         } catch(err){
-            return res.status(500).send({ msg:"erro no servidor" })
+            return res.status(500).send({ msg:"erro no servidor: " + err, })
         }
     }
 
