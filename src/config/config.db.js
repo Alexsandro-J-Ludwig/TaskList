@@ -6,13 +6,13 @@ dotenv.config();
 class DatabaseConnect {
     
     constructor(){
-        this.pool = new Pool({
-            connectionString: process.env.URL_DB
-        });
-
         if(!process.env.URL_DB){
             throw new Error("Variaveis globais sendo definidas como null")
         }
+
+        this.pool = new Pool({
+            connectionString: process.env.URL_DB
+        });
     }
 
     async query(text, params){
