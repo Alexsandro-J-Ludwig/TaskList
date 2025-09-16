@@ -9,6 +9,10 @@ class DatabaseConnect {
         this.pool = new Pool({
             connectionString: process.env.URL_DB
         });
+
+        if(!process.env.URL_DB){
+            throw new Error("Variaveis globais sendo definidas como null")
+        }
     }
 
     async query(text, params){
