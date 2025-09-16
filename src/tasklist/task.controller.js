@@ -9,9 +9,9 @@ class TaskController {
         const id_user = req.user.id
 
         try {
-            const { tarefa, descricao} = req.body;
+            const {titulo, descricao} = req.body;
             
-            if(!tarefa){
+            if(!titulo){
                 return res.status(400).send({ msg: "O nome da tarefa deve ser preenchido" });
             }
 
@@ -50,7 +50,7 @@ class TaskController {
         const id_user = req.user.id;
 
         try {
-            const { id, tarefa, descricao, status } = req.body;
+            const { id, titulo, descricao, status } = req.body;
 
             const data = {
                 ...req.body,

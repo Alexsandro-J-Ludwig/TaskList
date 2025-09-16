@@ -8,7 +8,7 @@ class TaskService {
     async createTask(body) {
         const taskVerify = await this.getTasks({ id_user: body.id_user });
 
-        const exists = taskVerify.rows.some(t => t.tarefa === body.tarefa && t.status === "incompleto");
+        const exists = taskVerify.rows.some(t => t.titulo === body.titulo && t.status === "incompleto");
         
         if (exists) {
             throw new Error("Essa tarefa já existe com status incompleto");
@@ -30,7 +30,7 @@ class TaskService {
             throw new Error("Tarefa não encontrada");
         }
 
-        if ("tarefa" in body && (body.tarefa === null || body.tarefa.trim() === "")) {
+        if ("titulo" in body && (body.titulo === null || body.titulo.trim() === "")) {
             throw new Error("O nome da tarefa não pode ser vazio");
         }
 

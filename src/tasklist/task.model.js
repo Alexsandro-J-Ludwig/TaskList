@@ -6,13 +6,13 @@ class TaskModal {
     }
 
     //Cria tarefas para um usuário
-    async createTask({tarefa, descricao, id_user, status="incompleto"}) {
+    async createTask({titulo, descricao, id_user, status="incompleto"}) {
         const query = `
-        INSERT INTO todolist(tarefa, descricao, id_user, status)
+        INSERT INTO todolist(titulo, descricao, id_user, status)
         VALUES ($1, $2, $3, $4);
         `
 
-        await this.pool.query(query, [tarefa, descricao, id_user, status]);
+        await this.pool.query(query, [titulo, descricao, id_user, status]);
     };
 
     //Pega todas as tarefas apra exibir ao usuário em sua página
@@ -26,13 +26,13 @@ class TaskModal {
     };
 
     //Atualiza as tarefas de acordo com os campos que são desejados informar
-    async updateTask({id, tarefa, descricao, status, id_user}) {
+    async updateTask({id, titulo, descricao, status, id_user}) {
         const value = [];
         const field = [];
         let index = 0;
 
-        if(tarefa != null){
-            value.push(tarefa);
+        if(titulo != null){
+            value.push(titulo);
             field.push(`tarefa=$${++index}`);
         }
         if(descricao != null){
