@@ -19,5 +19,5 @@ app.use('/tasks', taskRoutes.routes);
 const userRotues = new UserRoutes();
 app.use('/user', userRotues.routes)
 
-app.listen(3000, () => {console.log('Servidor rodando na porta 3000');
+app.listen(process.env.PORT || 3000, () => {console.log('Servidor rodando na porta 3000');
 })  
