@@ -7,7 +7,7 @@ class UserModal{
 
     async createUser({ username, email, password }){
         const query = `
-            INSERT INTO users(username, email, passwords)
+            INSERT INTO users(username, email, password)
             VALUES($1, $2, $3)
             RETURNING id, username
         `;
@@ -25,7 +25,7 @@ class UserModal{
         return result;
     };
 
-    async updateUser({ id, username, email, password, active }){
+    async updateUser({ id, username, email, password }){
         const value=[];
         const field=[];
         let index = 1;
@@ -42,11 +42,6 @@ class UserModal{
             value.push(password);
             field.push(`password=$${index++}`);
         };
-        if(active != false){
-            value.push(active);
-            field.push(`active=$${index++}`)
-        }
-        console.log(active);
 
         const query = `
             UPDATE users SET ${field.join(', ')} WHERE id=$${index}

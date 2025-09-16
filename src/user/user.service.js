@@ -28,7 +28,7 @@ class UserService{
             throw new Error("Usuário não encontrado");
         }
         
-        const hashSenha = await bcrypt.compare(body.password, users.rows[0].passwords);
+        const hashSenha = await bcrypt.compare(body.password, users.rows[0].password);
 
         if(!hashSenha){
             throw new Error("Senha inválida");
@@ -40,7 +40,7 @@ class UserService{
     async updateUser(body){
         const user = await this.UserModal.getUser({ id: body.id });
 
-        if(!user){
+        if(!user.rows[0]){
             throw new Error("Usuário não existe");
         }
 
@@ -55,12 +55,12 @@ class UserService{
     };
 
     async deleteUser(id){
-        const user = await this.UserModal.getUser({ id });
+        const user = await this.UserModal.getUser(id);
 
-        if(!user){
+        if(!user.rows[0]){
             throw new Error("Usuário não existe");
         };
-
+        
         await this.UserModal.deleteUser({ id });
         return { msg:"ok"}
     };

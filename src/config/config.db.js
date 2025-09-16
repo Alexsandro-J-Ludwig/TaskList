@@ -7,12 +7,7 @@ class DatabaseConnect {
     
     constructor(){
         this.pool = new Pool({
-            user: process.env.DB_USER,
-            host: process.env.HOST,
-            database: process.env.DB_NAME,
-            password: process.env.DB_PASSWORD,
-            port: process.env.DB_PORT,
-            idleTimeoutMillis: 10000
+            connectionString: process.env.URL_DB
         });
     }
 
