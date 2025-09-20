@@ -70,6 +70,23 @@ class UserController{
         }
     }
 
+    async getUserByEmail(req, user){
+        try {
+            const { email } = req.body;
+
+            const response = await UserService.getUserByEmail(req.body);
+
+            if(!response){
+                return res.status(404).send({ msg:"usuario nao encontrado" })
+            }
+
+            return res.status(200),json( response )
+            
+        } catch (error) {
+            return res.status(500).send({ msg:`erro no servidor: ${error}` });
+        }
+    }
+
     async updateUser(req, res){
         try{    
             const id = req.user.id;
