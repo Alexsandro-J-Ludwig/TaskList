@@ -30,10 +30,6 @@ class TaskService {
             throw new Error("Tarefa não encontrada");
         }
 
-        if ("titulo" in body && (body.titulo === null || body.titulo.trim() === "")) {
-            throw new Error("O nome da tarefa não pode ser vazio");
-        }
-
         await this.taskModal.updateTask(body);
     }
 
