@@ -33,7 +33,7 @@ class TaskModal {
 
         if(titulo != null){
             value.push(titulo);
-            field.push(`tarefa=$${++index}`);
+            field.push(`titulo=$${++index}`);
         }
         if(descricao != null){
             value.push(descricao);
