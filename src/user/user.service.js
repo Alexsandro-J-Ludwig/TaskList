@@ -36,17 +36,7 @@ class UserService{
         
         return { id: users.rows[0].id, username: users.rows[0].username };
     };
-
-    async getUserByEmail(body){
-        const users = await this.getUser({ email: body.email})
-
-        if(!users){
-            throw new Error("Usuário não encontrado")
-        };
-
-        return { id: users.rows[0] };
-    }
-
+    
     async updateUser(body){
         const user = await this.UserModal.getUser({ id: body.id });
 
