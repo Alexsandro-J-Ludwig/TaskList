@@ -15,14 +15,14 @@ class TaskModal {
         await this.pool.query(query, [titulo, descricao, id_user, status]);
     };
 
-    async getTasks({ id }){
+    async getTasks({ id_user, id, status }) {
         const query = `
-            SELECT * FROM todolist WHERE id=$1
+            SELECT * FROM todolist WHERE id_user=$1 OR id=$2 OR status=$3
         `
 
-        const result = await this.pool.query(query, [id]);
-        return result;
-    }
+        const result = await this.pool.query(query, [id_user, id, status]);
+        return result
+    };
 
     //Atualiza as tarefas de acordo com os campos que são desejados informar
     async updateTask({id, titulo, descricao, status, id_user}) {
