@@ -20,7 +20,7 @@ class TaskModal {
             SELECT * FROM todolist WHERE id=$1
         `
 
-        await this.pool.query(query. [id]);
+        await this.pool.query(query, [id]);
     }
 
     //Atualiza as tarefas de acordo com os campos que são desejados informar
